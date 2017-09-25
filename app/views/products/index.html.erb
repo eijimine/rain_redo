@@ -1,5 +1,21 @@
-<h1>Index View</h1>
+<h1 class="current-category"><%= params[:category] %></h1>
 
-<% @products.each do |product| %>
-  <h2><%= link_to product.name, product_path(product) %></h2>
-  <% end %>
+<% if @products.count == 0 %>
+  <h1>There are no products in that category</h1>
+
+  <% else %>
+
+  <div class="row">
+
+      <% @products.each do |product| %>
+
+        <div class="col-md-3">
+          <a href="/products/<%= product.id %>">
+            <%= image_tag product.product_img.url(:product_index), class: "product" %>
+          </a>
+        </div>
+
+    <% end %>
+
+  </div>
+<% end %>

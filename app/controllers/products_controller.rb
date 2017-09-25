@@ -2,7 +2,12 @@ class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = Product.all.order("created_at DESC")
+      if params[:category].blank?
+      @products = Product.all.order("created_at DESC")
+    else
+      @category_id = Category.find_by(name: params[:category]).id
+      @products = Product.where(:category_id => @category_id).order("created_at DESC")
+    end
   end
 
   def show
@@ -44,7 +49,7 @@ class ProductsController < ApplicationController
   private
 
     def product_params
-      params.require(:product).permit(:name, :description, :price_in_cents, :category_id)
+      params.require(:product).permit(:name, :description, :price_in_cents, :category_id, :product_img)
     end
 
     def find_product
