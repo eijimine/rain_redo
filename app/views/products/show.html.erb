@@ -4,6 +4,9 @@
   </div>
   <div class="col-md-8">
     <h2><%= @product.name %></h2>
+    <h2>Average Rating</h2>
+    <div class="average-review-rating" data-score="<%= @average_review %>"></div>
+    <span>Based On <%= @product.reviews.count %> reviews</span>
     <h4>Category: <%= @product.category.name %></h4>
     <p><%= @product.description %></p>
   </div>
@@ -12,11 +15,17 @@
 <div class="row">
   <div class="col-md-4">
     <!-- review and ratings will go here -->
+
+  <%= render @product.reviews %>
+
+  <div>
+    <%= link_to "Add Review", new_product_review_path(@product)  %>
+    <%= link_to 'Back', root_path %>
   </div>
 
+  </div>
 </div>
 
-<%= link_to 'Back', root_path %>
 
 <% if user_signed_in? %>
 
@@ -28,3 +37,23 @@
   <% end %>
 
 <% end %>
+
+<script>
+  $('.review-rating').raty({
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score');
+    },
+    path: '/assets/'
+  });
+</script>
+
+<script>
+  $('.average-review-rating').raty({
+    readOnly: true,
+    path: '/assets/',
+    score: function() {
+      return $(this).attr('data-score')
+    }
+  })
+</script>
